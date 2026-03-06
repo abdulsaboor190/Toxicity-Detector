@@ -47,12 +47,14 @@ API_PORT = int(os.environ.get("PORT", 8000))
 # In production: set CORS_ALLOWED env var to your Vercel frontend URL
 # e.g. CORS_ALLOWED=https://toxicity-detector.vercel.app
 _default_origins = [
+    "https://toxicity-detector-rho.vercel.app",
     "http://localhost:3000",
     "http://localhost:3001",
     "http://localhost:5173",
     "http://127.0.0.1:3000",
     "http://127.0.0.1:3001",
     "http://127.0.0.1:5173",
+    "*", # Wildcard catch-all to prevent strict CORS blocks
 ]
 
 _env_origins = os.environ.get("CORS_ALLOWED", "")
