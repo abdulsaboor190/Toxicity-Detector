@@ -1,0 +1,145 @@
+# ╔═══════════════════════════════════════════════════════════════════════╗
+# ║  CHAT TOXICITY DETECTOR — PROJECT RESTRUCTURING COMMANDS            ║
+# ║  Run these in PowerShell from the project root directory:           ║
+# ║  d:\Project\Chat\Chat Toxicity Detector2                           ║
+# ║                                                                     ║
+# ║  IMPORTANT: Run each section one at a time, in order.               ║
+# ║  Copy the commands (without the # comments) and paste into terminal ║
+# ╚═══════════════════════════════════════════════════════════════════════╝
+
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# SECTION 1: CREATE NEW DIRECTORIES
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+New-Item -ItemType Directory -Path "app\backend\models" -Force
+New-Item -ItemType Directory -Path "app\backend\routes" -Force
+New-Item -ItemType Directory -Path "data\raw\Data" -Force
+New-Item -ItemType Directory -Path "data\raw\Second_Data" -Force
+New-Item -ItemType Directory -Path "data\processed" -Force
+New-Item -ItemType Directory -Path "outputs\models" -Force
+New-Item -ItemType Directory -Path "outputs\evaluation" -Force
+New-Item -ItemType Directory -Path "docs\images" -Force
+
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# SECTION 2: MOVE DATA FILES → data\raw\Data
+# (Current data\ has raw CSVs sitting loose — move them into data\raw\Data)
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Move-Item -Path "data\train.csv" -Destination "data\raw\Data\train.csv" -Force
+Move-Item -Path "data\test.csv" -Destination "data\raw\Data\test.csv" -Force
+Move-Item -Path "data\test_labels.csv" -Destination "data\raw\Data\test_labels.csv" -Force
+Move-Item -Path "data\sample_submission.csv" -Destination "data\raw\Data\sample_submission.csv" -Force
+
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# SECTION 3: MOVE Second_Data → data\raw\Second_Data
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Move-Item -Path "Second_Data\*" -Destination "data\raw\Second_Data\" -Force
+Remove-Item -Path "Second_Data" -Recurse -Force
+
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# SECTION 4: MOVE PROCESSED DATA → data\processed
+# (phase3 has train_processed.csv and train_augmented.csv)
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Move-Item -Path "outputs\phase3\train_processed.csv" -Destination "data\processed\train_processed.csv" -Force
+Move-Item -Path "outputs\phase3\train_augmented.csv" -Destination "data\processed\train_augmented.csv" -Force
+Move-Item -Path "outputs\phase3\class_weights.json" -Destination "data\processed\class_weights.json" -Force
+Move-Item -Path "outputs\phase3\preprocessor.py" -Destination "ml\preprocessor.py" -Force
+
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# SECTION 5: REORGANIZE OUTPUTS → outputs\models and outputs\evaluation
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+# Move all saved model files → outputs\models
+Move-Item -Path "outputs\phase4\saved_models\*" -Destination "outputs\models\" -Force
+Move-Item -Path "outputs\phase4\tuned_thresholds.json" -Destination "outputs\models\tuned_thresholds.json" -Force
+
+# Move evaluation outputs → outputs\evaluation
+Move-Item -Path "outputs\phase4\phase4_summary.json" -Destination "outputs\evaluation\phase4_summary.json" -Force
+Move-Item -Path "outputs\phase5\phase5_summary.json" -Destination "outputs\evaluation\phase5_summary.json" -Force
+Move-Item -Path "outputs\phase5\bias_audit_results.csv" -Destination "outputs\evaluation\bias_audit_results.csv" -Force
+Move-Item -Path "outputs\phase5\bias_report.md" -Destination "outputs\evaluation\bias_report.md" -Force
+
+# Move plot folders into evaluation
+New-Item -ItemType Directory -Path "outputs\evaluation\plots_phase4" -Force
+New-Item -ItemType Directory -Path "outputs\evaluation\plots_phase5" -Force
+if (Test-Path "outputs\phase4\plots") { Move-Item -Path "outputs\phase4\plots\*" -Destination "outputs\evaluation\plots_phase4\" -Force }
+if (Test-Path "outputs\phase5\plots") { Move-Item -Path "outputs\phase5\plots\*" -Destination "outputs\evaluation\plots_phase5\" -Force }
+if (Test-Path "outputs\phase3\threshold_curves.png") { Move-Item -Path "outputs\phase3\threshold_curves.png" -Destination "outputs\evaluation\threshold_curves.png" -Force }
+
+# Clean up old phase folders
+Remove-Item -Path "outputs\phase3" -Recurse -Force
+Remove-Item -Path "outputs\phase4" -Recurse -Force
+Remove-Item -Path "outputs\phase5" -Recurse -Force
+
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# SECTION 6: MOVE EDA OUTPUTS AND PICTURES → docs\images
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Move-Item -Path "eda_outputs\*" -Destination "docs\images\" -Force
+Remove-Item -Path "eda_outputs" -Recurse -Force
+Move-Item -Path "Pictures\*" -Destination "docs\images\" -Force
+Remove-Item -Path "Pictures" -Recurse -Force
+
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# SECTION 7: MOVE BACKEND model.py + schemas.py → app\backend\models
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Move-Item -Path "app\backend\model.py" -Destination "app\backend\models\model.py" -Force
+Move-Item -Path "app\backend\schemas.py" -Destination "app\backend\models\schemas.py" -Force
+
+# Create __init__.py so Python can import from the models package
+New-Item -Path "app\backend\models\__init__.py" -ItemType File -Force
+New-Item -Path "app\backend\routes\__init__.py" -ItemType File -Force
+
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# SECTION 8: CLEAN UP JUNK FILES AND CACHES
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+if (Test-Path "__pycache__") { Remove-Item -Path "__pycache__" -Recurse -Force }
+if (Test-Path "app\backend\__pycache__") { Remove-Item -Path "app\backend\__pycache__" -Recurse -Force }
+if (Test-Path ".idea") { Remove-Item -Path ".idea" -Recurse -Force }
+if (Test-Path "New Text Document.txt") { Remove-Item "New Text Document.txt" -Force }
+if (Test-Path "abc.txt") { Remove-Item "abc.txt" -Force }
+
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# SECTION 9: VERIFY FINAL STRUCTURE
+# Run this to see the result — should match the target layout
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Write-Host "`n`n===== FINAL PROJECT STRUCTURE =====" -ForegroundColor Green
+Get-ChildItem -Recurse -Depth 3 -Exclude "node_modules","venv",".git","dist","__pycache__" | Where-Object { $_.FullName -notmatch "node_modules|venv|\.git|dist|__pycache__" } | ForEach-Object { $indent = "  " * ($_.FullName.Split("\").Count - (Get-Location).Path.Split("\").Count); Write-Host "$indent$($_.Name)" }
+
+
+# ╔═══════════════════════════════════════════════════════════════════════╗
+# ║  SECTION 10: CODE FIXES NEEDED AFTER RESTRUCTURE                    ║
+# ║                                                                     ║
+# ║  After running the above commands, TWO Python files need import     ║
+# ║  path updates because model.py and schemas.py moved into models/   ║
+# ║                                                                     ║
+# ║  FILE 1: app\backend\main.py                                       ║
+# ║  Change these lines:                                                ║
+# ║    OLD:  from schemas import AnalyzeRequest, AnalyzeResponse, ...   ║
+# ║    NEW:  from models.schemas import AnalyzeRequest, AnalyzeResponse ║
+# ║                                                                     ║
+# ║    OLD:  from model import analyzer                                 ║
+# ║    NEW:  from models.model import analyzer                          ║
+# ║                                                                     ║
+# ║  FILE 2: app\backend\config.py                                     ║
+# ║  Change model checkpoint paths to use new outputs structure:        ║
+# ║    OLD:  "outputs", "phase4", "saved_models", "bert_epoch1..."     ║
+# ║    NEW:  "outputs", "models", "bert_epoch1_f10.4322.pt"            ║
+# ║                                                                     ║
+# ║    OLD:  "outputs", "phase4", "tuned_thresholds.json"              ║
+# ║    NEW:  "outputs", "models", "tuned_thresholds.json"              ║
+# ╚═══════════════════════════════════════════════════════════════════════╝

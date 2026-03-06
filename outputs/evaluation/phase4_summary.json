@@ -1,0 +1,71 @@
+{
+  "phase": 4,
+  "completed_at": "2026-03-05T09:02:05",
+  "stage_times": {
+    "stage1_minutes": 0.46470250288645426
+  },
+  "results": {
+    "logistic_regression": {
+      "val_f1_macro": 0.5808102904957964,
+      "test_f1_macro": 0.40849575220458045,
+      "train_time_min": 0.12405256430308025,
+      "val_per_label": {
+        "toxic": 0.7572304995617879,
+        "severe_toxic": 0.4297752808988764,
+        "obscene": 0.7883102285500188,
+        "threat": 0.42166344294003866,
+        "insult": 0.6931953840031835,
+        "identity_hate": 0.3946869070208729
+      },
+      "test_per_label": {
+        "toxic": 0.6418826739427013,
+        "severe_toxic": 0.2792538157150933,
+        "obscene": 0.6488767248260919,
+        "threat": 0.10916496945010183,
+        "insult": 0.6076015727391875,
+        "identity_hate": 0.16419475655430713
+      }
+    }
+  },
+  "config": {
+    "train_path": "outputs/phase3/train_augmented.csv",
+    "test_path": "data/test.csv",
+    "test_labels_path": "data/test_labels.csv",
+    "label_cols": [
+      "toxic",
+      "severe_toxic",
+      "obscene",
+      "threat",
+      "insult",
+      "identity_hate"
+    ],
+    "val_size": 0.15,
+    "random_seed": 42,
+    "tfidf_max_features": 50000,
+    "tfidf_ngram_range": [
+      1,
+      2
+    ],
+    "model_name": "distilbert-base-uncased",
+    "max_length": 128,
+    "batch_size": 8,
+    "grad_accum_steps": 2,
+    "epochs": 3,
+    "learning_rate": 2e-05,
+    "warmup_ratio": 0.1,
+    "gradient_clip": 1.0,
+    "cpu_subset_frac": 1.0,
+    "bert_sample": null,
+    "output_dir": "outputs/phase4/",
+    "model_save_dir": "outputs/phase4/saved_models/",
+    "plots_dir": "outputs/phase4/plots/"
+  },
+  "class_weights": {
+    "toxic": 5.2168,
+    "severe_toxic": 50.0223,
+    "obscene": 9.4432,
+    "threat": 166.9153,
+    "insult": 10.1289,
+    "identity_hate": 56.7868
+  }
+}

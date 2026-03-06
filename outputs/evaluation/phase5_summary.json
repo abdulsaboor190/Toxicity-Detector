@@ -1,0 +1,46 @@
+{
+  "evaluation": {
+    "roc_auc_per_label": {},
+    "macro_auc": 0.0,
+    "f1_per_label": {},
+    "macro_f1": 0.0,
+    "miss_rate_per_label": {}
+  },
+  "bias_audit": {
+    "overall_auc": 0.8854232438598661,
+    "worst_subgroup": {
+      "name": "bisexual",
+      "subgroup_auc": 0.6
+    },
+    "best_subgroup": {
+      "name": "other_race_or_ethnicity",
+      "subgroup_auc": 1.0
+    },
+    "groups_with_significant_bias": [
+      "bisexual",
+      "muslim",
+      "transgender",
+      "black",
+      "white",
+      "homosexual_gay_or_lesbian",
+      "heterosexual",
+      "latino",
+      "buddhist",
+      "jewish",
+      "psychiatric_or_mental_illness"
+    ],
+    "mean_subgroup_auc": 0.8122709587350545
+  },
+  "config": {
+    "model_name": "distilbert-base-uncased",
+    "max_length": 128,
+    "thresholds": {
+      "toxic": 0.9,
+      "severe_toxic": 0.9,
+      "obscene": 0.9,
+      "threat": 0.84,
+      "insult": 0.89,
+      "identity_hate": 0.82
+    }
+  }
+}

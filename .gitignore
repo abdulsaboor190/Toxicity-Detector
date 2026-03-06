@@ -1,0 +1,45 @@
+# ═══════════════════════════════════════════
+# Chat Toxicity Detector — .gitignore
+# ═══════════════════════════════════════════
+
+# ── Python ────────────────────────────────
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# ── Node / Frontend ──────────────────────
+node_modules/
+app/frontend/dist/
+
+# ── IDE ──────────────────────────────────
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# ── Large Data (do NOT push to Git) ─────
+data/
+Second_Data/
+eda_outputs/
+Pictures/
+outputs/phase3/train_processed.csv
+outputs/phase3/train_augmented.csv
+
+# ── Model Weights (auto-downloaded from Google Drive) ──
+*.pt
+*.pkl
+
+# ── Misc ─────────────────────────────────
+*.log
+.env
+.env.local
+.env.production
+New Text Document.txt
+abc.txt
