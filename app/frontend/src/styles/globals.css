@@ -133,16 +133,15 @@ html {
 }
 
 .header__icon {
-  width: 34px;
-  height: 34px;
+  width: 38px;
+  height: 38px;
   border-radius: 8px;
-  background: linear-gradient(135deg, var(--color-accent), var(--color-accent-2));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
+  object-fit: contain;
   box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
   -webkit-text-fill-color: initial;
+  background-color: white;
+  /* Only needed if logo has transparent parts that look bad on dark */
+  padding: 2px;
 }
 
 .header__status {
@@ -156,6 +155,40 @@ html {
   padding: 6px 14px;
   border-radius: var(--radius-pill);
   border: 1px solid var(--border-subtle);
+}
+
+.header__right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header__socials {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-right: 16px;
+  border-right: 1px solid var(--border-subtle);
+}
+
+.social-link {
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-subtle);
+  transition: var(--transition);
+}
+
+.social-link:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--border-glow);
+  box-shadow: 0 0 15px var(--border-glow);
+  transform: translateY(-2px);
 }
 
 .header__dot {
