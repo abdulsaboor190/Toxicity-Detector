@@ -1,0 +1,33 @@
+# ── Git and IDE ──────────────────────────
+.git/
+.gitignore
+.idea/
+.vscode/
+
+# ── Python / Environments ───────────────
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# ── Project Specific Folders ────────────
+data/
+outputs/
+ml/
+docs/
+app/frontend/
+Pictures/
+eda_outputs/
+Second_Data/
+
+# ── Build output ────────────────────────
+app/frontend/dist/
+node_modules/
+
+# ── Misc ────────────────────────────────
+*.log
+*.txt
+# Allow requirements.txt
+!requirements.txt
+!app/backend/requirements.txt
