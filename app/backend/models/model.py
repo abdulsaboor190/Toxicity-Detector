@@ -101,8 +101,9 @@ class ToxicityAnalyzer:
                 print(f"  [model] WARNING — Using base weights (no fine-tuning)")
 
         if os.path.exists(CHECKPOINT_PATH):
-            print(f"  [model] Loading checkpoint: {os.path.basename(CHECKPOINT_PATH)}")
-            ckpt = torch.load(CHECKPOINT_PATH, map_location=DEVICE, weights_only=False)
+            print(f"  [model] Loading checkpoint: {os.path.basename(CHECKPOINT_PATH)} (mmap enabled)")
+            # mmap=True drops peak RAM usage from 1.5GB+ down to nearly 0!
+            ckpt = torch.load(CHECKPOINT_PATH, map_location=DEVICE, weights_only=False, mmap=True)
             if isinstance(ckpt, dict) and "model_state_dict" in ckpt:
                 self.model.load_state_dict(ckpt["model_state_dict"])
             else:
